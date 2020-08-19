@@ -190,6 +190,17 @@ def train(args):
                     print('reached maximum number of epochs!')
                     exit(0)
 
+def predict(args):
+    model = NMT.load(args['save_path'])
+    text  = ''
+    while True:
+        text = input("Enter your text (english): \n")
+        if text == 'stop':
+            break
+        output = model.beam_search(text.split())
+        print("Translating....\n.")
+        print(" ".join(output))
+
 if __name__ == "__main__":
     args = parser.parse_args()
 
@@ -200,6 +211,8 @@ if __name__ == "__main__":
     
     if args.mode == 'train':
         train(args)
+    elif args.mode == 'predict':
+        predict(args)
     else:
         raise RuntimeError('invalid run mode')
 
